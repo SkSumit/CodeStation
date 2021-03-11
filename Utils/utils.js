@@ -9,7 +9,7 @@ export const checkLogoUtil = (status) => {
 };
 
 export const getPlatform = (questionLink) => {
-  const platforms  = ["codechef", "leetcode", 'geeksforgeeks'] 
+  const platforms  = ["codechef", "leetcode", 'geeksforgeeks','spoj','hackerearth'] 
   platforms.find((platform)=> questionLink.includes(platform))
   return <span className="tag is-primary is-light">{ platforms.find((platform)=> questionLink.includes(platform))}</span>;
 };

@@ -60,3 +60,7 @@ export const updateData = (id, status, name) => {
     },
   });
 };
+
+export const deleteData = (id) => {
+  db.ref(`problems/${id}`).remove()
+}

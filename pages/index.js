@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Row } from "../component/Row";
 import { fetchData, saveData, db } from "../firebase/firebase";
 import { submitQuestionLink } from "../Utils/utils";
+import Image from "next/image";
 
 export default function Home({ data }) {
   const [problems, setProblems] = useState(data);
@@ -43,9 +44,7 @@ export default function Home({ data }) {
                 <p className="menu-label">General</p>
                 <ul className="menu-list">
                   <li>
-                    <form
-                      onSubmit={submitQuestionLink}
-                    >
+                    <form onSubmit={submitQuestionLink}>
                       <input
                         className="input is-normal mb-3"
                         type="text"
@@ -70,6 +69,9 @@ export default function Home({ data }) {
                       <th>Yash</th>
                       <th>Atharva</th>
                       <th>Sumit</th>
+                      <th>
+                        <Image src={"/trash.svg"} width={24} height={24} />
+                      </th>
                     </tr>
                   </thead>
 

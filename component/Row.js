@@ -1,12 +1,16 @@
 import React from "react";
 import Image from "next/image";
 import { checkLogoUtil, getPlatform } from "../Utils/utils";
-import { updateData } from "../firebase/firebase";
+import { deleteData, updateData } from "../firebase/firebase";
 
 export const Row = ({ problem }) => {
   return (
     <tr key={problem.id}>
-      <th>{problem.questionLink}</th>
+      <th>
+        <a target="_blank" href={problem.questionLink}>
+          {problem.questionLink}
+        </a>
+      </th>
       <th>{getPlatform(problem.questionLink)}</th>
       <th>{new Date(problem.date).toDateString()}</th>
       <th className="pointer">
@@ -32,7 +36,18 @@ export const Row = ({ problem }) => {
           src={checkLogoUtil(problem.sumit.status, "sumit")}
           width={24}
           height={24}
-          onClick={() => updateData(problem.id, problem.sumit.status)}
+          onClick={() => updateData(problem.id, problem.sumit.status, "sumit")}
+        />
+      </th>
+      <th>
+        <Image
+          src={"/trash.svg"}
+          width={24}
+          height={24}
+          onClick={() => {
+            if (window.confirm("Are you sure you wish to delete this item?"))
+              deleteData(problem.id)
+          }}
         />
       </th>
     </tr>
