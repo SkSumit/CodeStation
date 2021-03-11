@@ -1,0 +1,12 @@
+
+$table-head-cell-border-width:0;
+.box.table-wrapper {
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+
+.pointer{
+  cursor: pointer !important;
+}  
+
+@import '../node_modules/bulma/bulma.sass'

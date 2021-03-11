@@ -1,65 +1,98 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from "next/head";
+import { useEffect, useState } from "react";
+import { Row } from "../component/Row";
+import { fetchData, saveData, db } from "../firebase/firebase";
+import { submitQuestionLink } from "../Utils/utils";
 
-export default function Home() {
+export default function Home({ data }) {
+  const [problems, setProblems] = useState(data);
+  // console.log(problems);
+
+  useEffect(() => {
+    const listener = db.ref("problems").on("value", (snapshot) => {
+      const fetchedTasks = [];
+      snapshot.forEach((childSnapShot) => {
+        const data = childSnapShot.val();
+        fetchedTasks.push({ ...data, id: childSnapShot.key });
+      });
+      setProblems(fetchedTasks);
+    });
+
+    return () => db.ref("problems").off("value", listener);
+  }, [db]);
+
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>Create Next App</title>
+        <title>CodeStation - for DSA</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <section className={`section `}>
+        <div className="container is-fluid">
+          <section className="hero is-primary is-small">
+            <div className="hero-body">
+              <p className="title" onClick={saveData}>
+                CodeStation
+              </p>
+              <p className="subtitle">For 3 Bois, with ❤️</p>
+            </div>
+          </section>
+          <div className="columns  mt-3">
+            <div className="column is-2">
+              <aside className="menu px-3 py-3">
+                <p className="menu-label">General</p>
+                <ul className="menu-list">
+                  <li>
+                    <form
+                      onSubmit={submitQuestionLink}
+                    >
+                      <input
+                        className="input is-normal mb-3"
+                        type="text"
+                        placeholder="Add Question Link"
+                      />
+                      <button className="button is-success is-outlined is-FAB">
+                        Add +
+                      </button>
+                    </form>
+                  </li>
+                </ul>
+              </aside>
+            </div>
+            <div className="column">
+              <div className="box table-wrapper">
+                <table className="table is-hoverable is-fullwidth  ">
+                  <thead>
+                    <tr>
+                      <th>Question</th>
+                      <th>Platform</th>
+                      <th>Date</th>
+                      <th>Yash</th>
+                      <th>Atharva</th>
+                      <th>Sumit</th>
+                    </tr>
+                  </thead>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+                  <tbody>
+                    {problems &&
+                      problems.map((problem) => (
+                        <Row key={problem.id} problem={problem} />
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+      </section>
     </div>
-  )
+  );
+}
+export async function getServerSideProps(context) {
+  const data = fetchData();
+  return {
+    props: {
+      data,
+    },
+  };
 }
