@@ -17,3 +17,9 @@ yarn dev
 
 
 #### Change structure of `firebase.js` according to the users and needs
+
+
+### Todo
+- [ ] Integrate API for automating question solved on various platforms
+- [ ] Add sorting, filtering, searching
+- [ ] Add easy, medium, hard tags
