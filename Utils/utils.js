@@ -9,9 +9,19 @@ export const checkLogoUtil = (status) => {
 };
 
 export const getPlatform = (questionLink) => {
-  const platforms  = ["codechef", "leetcode", 'geeksforgeeks','spoj','hackerearth'] 
-  platforms.find((platform)=> questionLink.includes(platform))
-  return <span className="tag is-primary is-light">{ platforms.find((platform)=> questionLink.includes(platform))}</span>;
+  const platforms = [
+    "codechef",
+    "leetcode",
+    "geeksforgeeks",
+    "spoj",
+    "hackerearth",
+  ];
+  platforms.find((platform) => questionLink.includes(platform));
+  return (
+    <span className="tag is-primary is-light">
+      {platforms.find((platform) => questionLink.includes(platform))}
+    </span>
+  );
 };
 
 export const submitQuestionLink = (e) => {
@@ -29,11 +39,24 @@ export const submitQuestionLink = (e) => {
 };
 
 export const switchStatus = (status) => {
-  if(status === 'done' ){
-     return status = "yetToAttempt"
-  }else if (status === 'yetToAttempt'){
-    return status = "inProgress"
-  }else{
-    return status = 'done' 
+  if (status === "done") {
+    return (status = "yetToAttempt");
+  } else if (status === "yetToAttempt") {
+    return (status = "inProgress");
+  } else {
+    return (status = "done");
   }
-}
+};
+
+export const getQuestionSolved =  (problems) => {
+  const users = ["atharva", "sumit", "yash"];
+  const data = {};
+  users.forEach((user) => {
+    Object.assign(data, {
+      [user]: problems.filter((problem) => problem[user].status === "done")
+        .length,
+    });
+  });
+  
+  return data;
+};

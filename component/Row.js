@@ -6,7 +6,7 @@ import { deleteData, updateData } from "../firebase/firebase";
 export const Row = ({ problem }) => {
   return (
     <tr key={problem.id}>
-      <th>
+      <th >
         <a target="_blank" href={problem.questionLink}>
           {problem.questionLink}
         </a>
@@ -39,7 +39,7 @@ export const Row = ({ problem }) => {
           onClick={() => updateData(problem.id, problem.sumit.status, "sumit")}
         />
       </th>
-      <th>
+      <th className="pointer">
         <Image
           src={"/trash.svg"}
           width={24}

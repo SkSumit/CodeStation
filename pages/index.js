@@ -2,13 +2,13 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Row } from "../component/Row";
 import { fetchData, saveData, db } from "../firebase/firebase";
-import { submitQuestionLink } from "../Utils/utils";
+import { submitQuestionLink, getQuestionSolved } from "../Utils/utils";
 import Image from "next/image";
 
 export default function Home({ data }) {
   const [problems, setProblems] = useState(data);
-  // console.log(problems);
-
+  const questionSolved = getQuestionSolved(problems);
+ 
   useEffect(() => {
     const listener = db.ref("problems").on("value", (snapshot) => {
       const fetchedTasks = [];
@@ -40,7 +40,7 @@ export default function Home({ data }) {
           </section>
           <div className="columns  mt-3">
             <div className="column is-2">
-              <aside className="menu px-3 py-3">
+              <aside className="menu  py-3">
                 <p className="menu-label">General</p>
                 <ul className="menu-list">
                   <li>
@@ -56,11 +56,40 @@ export default function Home({ data }) {
                     </form>
                   </li>
                 </ul>
+
+                <p className="menu-label">Solved</p>
+                <ul className="menu-list">
+                  {Object.keys(questionSolved).map((user) => {
+                    return (
+                      <li key="user">
+                        <div className="control  py-2">
+                          <div className="tags has-addons">
+                            <span
+                              className="tag is-light"
+                              style={{ textTransform: "capitalize" }}
+                            >
+                              {user}
+                            </span>
+                            <span className="tag is-success">
+                              {questionSolved[user]}
+                            </span>
+                            <span className="tag is-danger">
+                              {problems.length - questionSolved[user]}
+                            </span>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
               </aside>
             </div>
             <div className="column">
               <div className="box table-wrapper">
-                <table className="table is-hoverable is-fullwidth  ">
+                <table
+                  className="table is-hoverable is-fullwidth  "
+                  style={{ width: "max-content" }}
+                >
                   <thead>
                     <tr>
                       <th>Question</th>
