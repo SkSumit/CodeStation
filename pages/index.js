@@ -8,7 +8,7 @@ import Image from "next/image";
 export default function Home({ data }) {
   const [problems, setProblems] = useState(data);
   const questionSolved = getQuestionSolved(problems);
- 
+
   useEffect(() => {
     const listener = db.ref("problems").on("value", (snapshot) => {
       const fetchedTasks = [];
@@ -85,10 +85,10 @@ export default function Home({ data }) {
               </aside>
             </div>
             <div className="column">
-              <div className="box table-wrapper">
+              <div className="table-container box">
                 <table
                   className="table is-hoverable is-fullwidth  "
-                 
+                  style={{ width: "auto" }}
                 >
                   <thead>
                     <tr>
