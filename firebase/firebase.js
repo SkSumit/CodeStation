@@ -52,7 +52,7 @@ export const fetchData = () => {
 };
 
 export const updateData = (id, status, name) => {
-  console.log(id, status);
+  // console.log(id, status);
   switchStatus();
   db.ref(`problems/${id}`).update({
     [name]: {

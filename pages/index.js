@@ -88,7 +88,7 @@ export default function Home({ data }) {
               <div className="box table-wrapper">
                 <table
                   className="table is-hoverable is-fullwidth  "
-                  style={{ width: "max-content" }}
+                 
                 >
                   <thead>
                     <tr>

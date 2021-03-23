@@ -7,12 +7,12 @@ export const Row = ({ problem }) => {
   return (
     <tr key={problem.id}>
       <th >
-        <a target="_blank" href={problem.questionLink}>
+        <a target="_blank" href={problem.questionLink} >
           {problem.questionLink}
         </a>
       </th>
       <th>{getPlatform(problem.questionLink)}</th>
-      <th>{new Date(problem.date).toDateString()}</th>
+      <th>{new Date(problem.date).toLocaleDateString('en-GB')}</th>
       <th className="pointer">
         <Image
           src={checkLogoUtil(problem.yash.status)}
