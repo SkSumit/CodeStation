@@ -6,13 +6,13 @@ import { deleteData, updateData } from "../firebase/firebase";
 export const Row = ({ problem }) => {
   return (
     <tr key={problem.id}>
-      <td style={{width:'50%'}}>
-        <a target="_blank" href={problem.questionLink} >
+      <td style={{ width: "50%" }}>
+        <a target="_blank" href={problem.questionLink}>
           {problem.questionLink}
         </a>
       </td>
       <td>{getPlatform(problem.questionLink)}</td>
-      <td>{new Date(problem.date).toLocaleDateString('en-GB')}</td>
+      <td>{new Date(problem.date).toLocaleDateString("en-GB")}</td>
       <td className="pointer">
         <Image
           src={checkLogoUtil(problem.yash.status)}
@@ -46,7 +46,7 @@ export const Row = ({ problem }) => {
           height={24}
           onClick={() => {
             if (window.confirm("Are you sure you wish to delete this item?"))
-              deleteData(problem.id)
+              deleteData(problem.id);
           }}
         />
       </td>

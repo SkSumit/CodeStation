@@ -61,7 +61,7 @@ export default function Home({ data }) {
                 <ul className="menu-list">
                   {Object.keys(questionSolved).map((user) => {
                     return (
-                      <li key="user">
+                      <li key={user}>
                         <div className="control  py-2">
                           <div className="tags has-addons">
                             <span
@@ -87,8 +87,8 @@ export default function Home({ data }) {
             <div className="column">
               <div className="table-container box">
                 <table
-                  className="table is-hoverable is-fullwidth  "
-                  style={{ width: "auto" }}
+                  className="table is-hoverable "
+                 
                 >
                   <thead>
                     <tr>
@@ -99,8 +99,9 @@ export default function Home({ data }) {
                       <th>Atharva</th>
                       <th>Sumit</th>
                       <th>
-                        <Image src={"/trash.svg"} width={24} height={24} />
+                        <Image src={"/trash.svg"} width={24} height={24} priority={true} layout="fixed"  />
                       </th>
+                   
                     </tr>
                   </thead>
 

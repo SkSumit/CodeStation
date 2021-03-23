@@ -3,13 +3,20 @@ $table-head-cell-border-width:0;
 .box.table-wrapper {
     overflow-x: auto;
     overflow-y: auto;
+    padding-left: 0rem !important;
+  padding-right: 0rem !important; 
     width:100%;
   }
 
 .pointer{
   cursor: pointer !important;
 
-}  
+} 
+
+table {
+  width: 100% !important;
+  overflow-x: auto;
+}
 
 
 @import '../node_modules/bulma/bulma.sass'
