@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Row } from "../component/Row";
-import { fetchData, saveData, db } from "../firebase/firebase";
+import { fetchData, db } from "../firebase/firebase";
 import { submitQuestionLink, getQuestionSolved } from "../Utils/utils";
 import Image from "next/image";
 
@@ -32,7 +32,7 @@ export default function Home({ data }) {
         <div className="container is-fluid">
           <section className="hero is-primary is-small">
             <div className="hero-body">
-              <p className="title" onClick={saveData}>
+              <p className="title" >
                 CodeStation
               </p>
               <p className="subtitle">For 3 Bois, with ❤️</p>

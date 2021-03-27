@@ -1,5 +1,5 @@
 import { saveData } from "../firebase/firebase";
-
+import sendinblue from "../Utils/email";
 export const checkLogoUtil = (status) => {
   return status === "done"
     ? "/check-circle-done.svg"
@@ -31,6 +31,7 @@ export const submitQuestionLink = (e) => {
       new URL(e.target[0].value);
       saveData(e.target[0].value);
       e.target[0].value = " ";
+      sendinblue();
     } catch (_) {
       console.log("Not a valid URL");
       e.target[0].value = " ";
@@ -48,7 +49,7 @@ export const switchStatus = (status) => {
   }
 };
 
-export const getQuestionSolved =  (problems) => {
+export const getQuestionSolved = (problems) => {
   const users = ["atharva", "sumit", "yash"];
   const data = {};
   users.forEach((user) => {
@@ -57,6 +58,7 @@ export const getQuestionSolved =  (problems) => {
         .length,
     });
   });
-  
+
   return data;
 };
+
