@@ -5,18 +5,22 @@ import { fetchData, db, auth } from "../firebase/firebase";
 import { submitQuestionLink, getQuestionSolved } from "../Utils/utils";
 import Image from "next/image";
 
-export default function Home({ data, dataAuth }) {
+export default function Home({ data }) {
   const [problems, setProblems] = useState(data);
   const questionSolved = getQuestionSolved(problems);
 
   useEffect(() => {
-    const listener = db.ref("problems").on("value", (snapshot) => {
-      const fetchedTasks = [];
-      snapshot.forEach((childSnapShot) => {
-        const data = childSnapShot.val();
-        fetchedTasks.push({ ...data, id: childSnapShot.key });
+    var listener;
+     auth.signInAnonymously().then((data) => {
+       console.log(data.user)
+      listener = db.ref("problems").on("value", (snapshot) => {
+        const fetchedTasks = [];
+        snapshot.forEach((childSnapShot) => {
+          const data = childSnapShot.val();
+          fetchedTasks.push({ ...data, id: childSnapShot.key });
+        });
+        setProblems(fetchedTasks);
       });
-      setProblems(fetchedTasks);
     });
 
     return () => db.ref("problems").off("value", listener);
@@ -122,12 +126,7 @@ export default function Home({ data, dataAuth }) {
   );
 }
 export async function getServerSideProps(context) {
-  var data;
-  const dataAuth = await auth.signInAnonymously();
-  if (dataAuth.user) {
-    console.log("authenticated")
-    data = fetchData();
-  }
+  const data = fetchData();
 
   return {
     props: {
