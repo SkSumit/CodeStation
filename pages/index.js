@@ -5,7 +5,7 @@ import { fetchData, db, auth } from "../firebase/firebase";
 import { submitQuestionLink, getQuestionSolved } from "../Utils/utils";
 import Image from "next/image";
 
-export default function Home({ data }) {
+export default function Home({ data, dataAuth }) {
   const [problems, setProblems] = useState(data);
   const questionSolved = getQuestionSolved(problems);
 
@@ -122,8 +122,12 @@ export default function Home({ data }) {
   );
 }
 export async function getServerSideProps(context) {
-  await auth.signInAnonymously();
-  const data = fetchData();
+  var data;
+  const dataAuth = await auth.signInAnonymously();
+  if (dataAuth.user) {
+    console.log("authenticated")
+    data = fetchData();
+  }
 
   return {
     props: {
