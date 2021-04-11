@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { checkLogoUtil, getPlatform } from "../Utils/utils";
-import { deleteData, updateData } from "../firebase/firebase";
+import { deleteData, mustSolveToggle, updateData } from "../firebase/firebase";
 
 export const Row = ({ problem }) => {
   return (
@@ -10,6 +10,14 @@ export const Row = ({ problem }) => {
         <a target="_blank" href={problem.questionLink}>
           {problem.questionLink}
         </a>
+      </td>
+      <td className="pointer">
+        <Image
+          src={problem.mustSolve ? "/starGold.svg" : "/star.svg"}
+          width={24}
+          height={24}
+          onClick={() => mustSolveToggle(problem.id, problem.mustSolve)}
+        />
       </td>
       <td>{getPlatform(problem.questionLink)}</td>
       <td>{new Date(problem.date).toLocaleDateString("en-GB")}</td>

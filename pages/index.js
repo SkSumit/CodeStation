@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Row } from "../component/Row";
-import { fetchData, db } from "../firebase/firebase";
+import { fetchData, db, auth } from "../firebase/firebase";
 import { submitQuestionLink, getQuestionSolved } from "../Utils/utils";
 import Image from "next/image";
 
@@ -32,9 +32,7 @@ export default function Home({ data }) {
         <div className="container is-fluid">
           <section className="hero is-primary is-small">
             <div className="hero-body">
-              <p className="title" >
-                CodeStation
-              </p>
+              <p className="title">CodeStation</p>
               <p className="subtitle">For 3 Bois, with ❤️</p>
             </div>
           </section>
@@ -86,22 +84,25 @@ export default function Home({ data }) {
             </div>
             <div className="column">
               <div className="table-container box">
-                <table
-                  className="table is-hoverable "
-                 
-                >
+                <table className="table is-hoverable ">
                   <thead>
                     <tr>
                       <th>Question</th>
+                      <th>Must Solve</th>
                       <th>Platform</th>
                       <th>Date</th>
                       <th>Yash</th>
                       <th>Atharva</th>
                       <th>Sumit</th>
                       <th>
-                        <Image src={"/trash.svg"} width={24} height={24} priority={true} layout="fixed"  />
+                        <Image
+                          src={"/trash.svg"}
+                          width={24}
+                          height={24}
+                          priority={true}
+                          layout="fixed"
+                        />
                       </th>
-                   
                     </tr>
                   </thead>
 
@@ -121,7 +122,9 @@ export default function Home({ data }) {
   );
 }
 export async function getServerSideProps(context) {
+  await auth.signInAnonymously();
   const data = fetchData();
+
   return {
     props: {
       data,
