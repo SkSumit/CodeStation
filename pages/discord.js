@@ -1,18 +1,18 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { Row } from "../component/Row";
-import { fetchData, db, auth } from "../firebase/firebase";
-import { submitQuestionLink, getQuestionSolved } from "../Utils/utils";
+import { Row, RowForDiscordUsers } from "../component/Row";
+import { fetchDataForDiscordUsers, db, auth } from "../firebase/firebase";
+import { submitQuestionLinkForDiscordUsers, getQuestionSolvedForDiscordUsers , refPathForFirebase,users } from "../Utils/utils";
 import Image from "next/image";
 
-export default function Home({ data }) {
+export default function Discord({ data }) {
   const [problems, setProblems] = useState(data);
-  const questionSolved = getQuestionSolved(problems);
+  const questionSolved = getQuestionSolvedForDiscordUsers(problems);
 
   useEffect(() => {
     var listener;
      auth.signInAnonymously().then((data) => {
-      listener = db.ref("problems").on("value", (snapshot) => {
+      listener = db.ref(refPathForFirebase).on("value", (snapshot) => {
         const fetchedTasks = [];
         snapshot.forEach((childSnapShot) => {
           const data = childSnapShot.val();
@@ -36,7 +36,7 @@ export default function Home({ data }) {
           <section className="hero is-primary is-small">
             <div className="hero-body">
               <p className="title">CodeStation</p>
-              <p className="subtitle">For 3 Bois, with ❤️</p>
+              <p className="subtitle">For Discord, with ❤️</p>
             </div>
           </section>
           <div className="columns  mt-3">
@@ -45,7 +45,7 @@ export default function Home({ data }) {
                 <p className="menu-label">General</p>
                 <ul className="menu-list">
                   <li>
-                    <form onSubmit={submitQuestionLink}>
+                    <form onSubmit={submitQuestionLinkForDiscordUsers}>
                       <input
                         className="input is-normal mb-3"
                         type="text"
@@ -94,9 +94,10 @@ export default function Home({ data }) {
                       <th>Must Solve</th>
                       <th>Platform</th>
                       <th>Date</th>
-                      <th>Yash</th>
-                      <th>Atharva</th>
-                      <th>Sumit</th>
+                      {
+                          users.map((user)=> <th>{user}</th>)
+                      }
+                      
                       <th>
                         <Image
                           src={"/trash.svg"}
@@ -112,7 +113,7 @@ export default function Home({ data }) {
                   <tbody>
                     {problems &&
                       problems.map((problem) => (
-                        <Row key={problem.id} problem={problem} />
+                        <RowForDiscordUsers key={problem.id} problem={problem} />
                       ))}
                   </tbody>
                 </table>
@@ -125,8 +126,7 @@ export default function Home({ data }) {
   );
 }
 export async function getServerSideProps(context) {
-  const data = fetchData();
-
+  const data = fetchDataForDiscordUsers();
   return {
     props: {
       data,

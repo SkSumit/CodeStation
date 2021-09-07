@@ -1,5 +1,6 @@
-import { saveData } from "../firebase/firebase";
+import { saveData, saveDataForDiscordUsers } from "../firebase/firebase";
 import sendinblue from "../Utils/email";
+
 export const checkLogoUtil = (status) => {
   return status === "done"
     ? "/check-circle-done.svg"
@@ -62,3 +63,33 @@ export const getQuestionSolved = (problems) => {
   return data;
 };
 
+// DISCORD USERS CONSTANTS
+export const users=["Sumit", "Vaishnavi"]
+export const refPathForFirebase = "discordProblems"
+
+export const submitQuestionLinkForDiscordUsers = (e) => {
+  e.preventDefault();
+  if (/\S/.test(e.target[0].value)) {
+    try {
+      new URL(e.target[0].value);
+      saveDataForDiscordUsers(e.target[0].value);
+      e.target[0].value = " ";
+      sendinblue();
+    } catch (_) {
+      console.log("Not a valid URL");
+      e.target[0].value = " ";
+    }
+  }
+};
+
+export const getQuestionSolvedForDiscordUsers = (problems) => {
+  const data = {};
+  users.forEach((user) => {
+    Object.assign(data, {
+      [user]: problems.filter((problem) => problem[user].status === "done")
+        .length,
+    });
+  });
+
+  return data;
+};

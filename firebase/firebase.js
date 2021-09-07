@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 
 import "firebase/database";
 import 'firebase/auth'
-import { switchStatus } from "../Utils/utils";
+import { switchStatus, users, refPathForFirebase } from "../Utils/utils";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -72,4 +72,63 @@ export const mustSolveToggle = (id, mustSolve) => {
 
 export const deleteData = (id) => {
   db.ref(`problems/${id}`).remove();
+};
+
+
+
+
+
+
+
+
+
+//Patch for discord users
+export const saveDataForDiscordUsers = (questionLink) => {
+  var data = {
+    questionLink,
+    date: new Date().toString(),
+  }
+  users.map( (user)=>{
+    data[user] = {
+        status: "yetToAttempt",
+        updatedAt: new Date().toString(),
+      }
+  })
+  console.log(data)
+  db.ref(refPathForFirebase)
+    .push()
+    .set(data);
+};
+
+
+export const fetchDataForDiscordUsers = () => {
+  var result = [];
+  db.ref(refPathForFirebase).on("value", (snapshot) => {
+    snapshot.forEach((childSnapShot) => {
+      const data = childSnapShot.val();
+      result.push({ ...data, id: childSnapShot.key });
+    });
+  });
+  // console.log(result)
+  return result;
+};
+
+export const updateDataForDiscordUsers = (id, status, name) => {
+  // console.log(id, status);
+  switchStatus();
+  db.ref(`${refPathForFirebase}/${id}`).update({
+    [name]: {
+      status: switchStatus(status),
+    },
+  });
+};
+
+export const mustSolveToggleForDiscordUsers = (id, mustSolve) => {
+  db.ref(`${refPathForFirebase}/${id}`).update({
+    mustSolve: !mustSolve,
+  });
+};
+
+export const deleteDataForDiscordUsers = (id) => {
+  db.ref(`${refPathForFirebase}/${id}`).remove();
 };
